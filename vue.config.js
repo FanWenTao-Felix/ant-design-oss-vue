@@ -16,7 +16,7 @@ module.exports = {
   productionSourceMap: false,
 
   //打包app时放开该配置
-  //publicPath:'./',
+  publicPath:'./',
   configureWebpack: config => {
     //生产环境取消 console.log
     if (process.env.NODE_ENV === 'production') {
@@ -78,7 +78,7 @@ module.exports = {
         }
       },*/
       '/jeecg-boot': {
-        target: 'http://localhost:8080', //请求本地 需要jeecg-boot后台项目
+        target: 'http://192.168.0.100:8080', //请求本地 需要jeecg-boot后台项目
         ws: false,
         changeOrigin: true
       },
