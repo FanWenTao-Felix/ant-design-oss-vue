@@ -46,11 +46,11 @@
     },
     computed: {
       comp: function () {
-        console.log("组件名称：",this.compName);
-        console.log("组件数据：",this.formData)
+        console.log('组件名称：', this.compName);
+        console.log('组件数据：', this.formData)
         return () => import(`@/views/${this.compName}.vue`)
       }
     },
-    props: ['path','formData']
+    props: ['path', 'formData']
   }
 </script>
