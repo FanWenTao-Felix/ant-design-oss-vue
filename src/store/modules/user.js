@@ -3,7 +3,7 @@ import { login, logout, phoneLogin, thirdLogin } from "@/api/login"
 import { ACCESS_TOKEN, USER_NAME,USER_INFO,USER_AUTH,SYS_BUTTON_AUTH,UI_CACHE_DB_DICT_DATA } from "@/store/mutation-types"
 import { welcome } from "@/utils/util"
 import { queryPermissionsByUser } from '@/api/api'
-import { getAction } from '@/api/manage'
+import { getAction,postAction } from '@/api/manage'
 
 const user = {
   state: {
@@ -54,7 +54,8 @@ const user = {
             commit('SET_AVATAR', userInfo.avatar)
             resolve(response)
           }else{
-            resolve(response)
+            console.log("登录失败。");
+            //resolve(response)
           }
         }).catch(error => {
           reject(error)
@@ -65,6 +66,53 @@ const user = {
     Login({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
+          if(response.code =='200'){
+            const result = response.result
+            const userInfo = result.userInfo
+            Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
+            Vue.ls.set(USER_NAME, userInfo.username, 7 * 24 * 60 * 60 * 1000)
+            Vue.ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
+            Vue.ls.set(UI_CACHE_DB_DICT_DATA, result.sysAllDictItems, 7 * 24 * 60 * 60 * 1000)
+            commit('SET_TOKEN', result.token)
+            commit('SET_INFO', userInfo)
+            commit('SET_NAME', { username: userInfo.username,realname: userInfo.realname, welcome: welcome() })
+            commit('SET_AVATAR', userInfo.avatar)
+            resolve(response)
+          }else{
+            reject(response)
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 快捷登录
+    // LoginAddr({ commit }, userInfo) {
+    //   return new Promise((resolve, reject) => {
+    //     login(userInfo).then(response => {
+    //       if(response.code =='200'){
+    //         const result = response.result
+    //         const userInfo = result.userInfo
+    //         Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
+    //         Vue.ls.set(USER_NAME, userInfo.username, 7 * 24 * 60 * 60 * 1000)
+    //         Vue.ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
+    //         Vue.ls.set(UI_CACHE_DB_DICT_DATA, result.sysAllDictItems, 7 * 24 * 60 * 60 * 1000)
+    //         commit('SET_TOKEN', result.token)
+    //         commit('SET_INFO', userInfo)
+    //         commit('SET_NAME', { username: userInfo.username,realname: userInfo.realname, welcome: welcome() })
+    //         commit('SET_AVATAR', userInfo.avatar)
+    //         resolve(response)
+    //       }else{
+    //         reject(response)
+    //       }
+    //     }).catch(error => {
+    //       reject(error)
+    //     })
+    //   })
+    // },
+    LoginAddr({ commit }, userInfo) {
+      return new Promise((resolve, reject) => {
+        postAction("/sys/login_addr",userInfo).then(response => {
           if(response.code =='200'){
             const result = response.result
             const userInfo = result.userInfo
@@ -146,7 +194,7 @@ const user = {
       })
     },
 
-    // 登出
+   // 登出
     Logout({ commit, state }) {
       return new Promise((resolve) => {
         let logoutToken = state.token;
@@ -165,6 +213,24 @@ const user = {
         })
       })
     },
+    // 登出(cas支持解开)
+    // Logout({ commit, state }) {
+    //   return new Promise((resolve) => {
+    //     let logoutToken = state.token;
+    //     commit('SET_TOKEN', '')
+    //     commit('SET_PERMISSIONLIST', [])
+    //     Vue.ls.remove(ACCESS_TOKEN)
+    //     //console.log('logoutToken: '+ logoutToken)
+    //     logout(logoutToken).then(() => {
+    //       var sevice = "http://"+window.location.host+"/";
+    //       var serviceUrl = encodeURIComponent(sevice);
+    //       window.location.href = window._CONFIG['casPrefixUrl']+"/logout?service="+serviceUrl;
+    //       //resolve()
+    //     }).catch(() => {
+    //       resolve()
+    //     })
+    //   })
+    // },
     // 第三方登录
     ThirdLogin({ commit }, token) {
       return new Promise((resolve, reject) => {
