@@ -3,6 +3,7 @@ import App from './App.vue'
 import Storage from 'vue-ls'
 import router from './router'
 import store from './store/'
+import SSO from '@/cas/sso.js'
 
 import { VueAxios } from "@/utils/request"
 
@@ -70,6 +71,50 @@ new Vue({
     store.commit('TOGGLE_COLOR', Vue.ls.get(DEFAULT_COLOR, config.primaryColor))
     store.commit('SET_TOKEN', Vue.ls.get(ACCESS_TOKEN))
     store.commit('SET_MULTI_PAGE',Vue.ls.get(DEFAULT_MULTI_PAGE,config.multipage))
+    getUrlUser()
   },
   render: h => h(App)
 }).$mount('#app')
+// SSO.init(() => {
+//   main();
+// });
+// function main() {
+//   new Vue({
+//     router,
+//     store,
+//     mounted () {
+//       store.commit('SET_SIDEBAR_TYPE', Vue.ls.get(SIDEBAR_TYPE, true))
+//       store.commit('TOGGLE_THEME', Vue.ls.get(DEFAULT_THEME, config.navTheme))
+//       store.commit('TOGGLE_LAYOUT_MODE', Vue.ls.get(DEFAULT_LAYOUT_MODE, config.layout))
+//       store.commit('TOGGLE_FIXED_HEADER', Vue.ls.get(DEFAULT_FIXED_HEADER, config.fixedHeader))
+//       store.commit('TOGGLE_FIXED_SIDERBAR', Vue.ls.get(DEFAULT_FIXED_SIDEMENU, config.fixSiderbar))
+//       store.commit('TOGGLE_CONTENT_WIDTH', Vue.ls.get(DEFAULT_CONTENT_WIDTH_TYPE, config.contentWidth))
+//       store.commit('TOGGLE_FIXED_HEADER_HIDDEN', Vue.ls.get(DEFAULT_FIXED_HEADER_HIDDEN, config.autoHideHeader))
+//       store.commit('TOGGLE_WEAK', Vue.ls.get(DEFAULT_COLOR_WEAK, config.colorWeak))
+//       store.commit('TOGGLE_COLOR', Vue.ls.get(DEFAULT_COLOR, config.primaryColor))
+//       store.commit('SET_TOKEN', Vue.ls.get(ACCESS_TOKEN))
+//       store.commit('SET_MULTI_PAGE',Vue.ls.get(DEFAULT_MULTI_PAGE,true))
+//     },
+//     render: h => h(App)
+//   }).$mount('#app')
+// }
+function getUrlUser(){
+  var url = window.location.href // 获取当前url
+  var dz_url = url.split('#')[0] // 获取#/之前的字符串
+  var cs = dz_url.split('?')[1]  // 获取?之后的参数字符串
+  var cs_arr = cs.split('&')  // 参数字符串分割为数组
+  var cs = {}
+  // var cs = {}
+  // let id = this.$route
+  // 遍历数组，拿到json对象
+  for (var i = 0; i < cs_arr.length; i++) {
+    cs[cs_arr[i].split('=')[0]] = cs_arr[i].split('=')[1]
+  }
+  if (cs.username !== undefined) {
+    store.dispatch('LoginAddr',cs).then(res => {
+      if(res.success){
+        location.reload()
+      }
+    });
+  }
+}

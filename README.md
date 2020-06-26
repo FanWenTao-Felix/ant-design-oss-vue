@@ -104,3 +104,12 @@ yarn run lint
 ----
 
 > @vue/cli 升级后，eslint 规则更新了。由于影响到全部 .vue 文件，需要逐个验证。既暂时关闭部分原本不验证的规则，后期维护时，在逐步修正这些 rules
+
+打包在tomcat下面的注意事项（ouln）
+修改文件：
+  1、修改IP地址
+    vue.config.js
+    public/index.html
+  
+  2、注释代码（// mode: 'history'）
+    src/router/index.js
