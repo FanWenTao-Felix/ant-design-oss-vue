@@ -400,7 +400,7 @@
         return this.model.scrollFlag === 1 || this.isMobile()
       },
       tableScroll() {
-        // 移动端模式下无论如何都开启横向滚动条
+        // 移动端模式下无论如何都开启横向
         if (this.enableScrollBar) {
           return undefined
         } else {

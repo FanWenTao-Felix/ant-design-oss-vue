@@ -1,21 +1,21 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper', device]">
     <div class="container">
-      <div class="top">
-        <div class="header">
+      <!--<div class="top">
+        &lt;!&ndash;<div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo">
             <span class="title">Jeecg Boot</span>
           </a>
-        </div>
+        </div>&ndash;&gt;
         <div class="desc">
-          Jeecg Boot 是中国最具影响力的 企业级 快速开发平台
+          上海尚禾信息科技有限公司
         </div>
-      </div>
+      </div>-->
 
       <route-view></route-view>
 
-      <div class="footer">
+     <!-- <div class="footer">
         <div class="links">
           <a href="http://doc.jeecg.com" target="_blank">帮助</a>
           <a href="https://github.com/zhangdaiscott/jeecg-boot" target="_blank">隐私</a>
@@ -24,7 +24,7 @@
         <div class="copyright">
           Copyright &copy; 2019 <a href="http://www.jeecg.com" target="_blank">JEECG开源社区</a> 出品
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -56,19 +56,32 @@
     &.mobile {
       .container {
         .main {
-          max-width: 368px;
-          width: 98%;
+          max-width: 18%;
+          width: 100%;
         }
       }
     }
 
     .container {
+      display: flex;
+      align-items: center;
       width: 100%;
-      min-height: 100%;
-      background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
+      height: 100%;
+      margin: 0 auto;
+      z-index: 199;
+      background-image:url('~@/assets/login/top.png'),
+      url('~@/assets/login/login.png'),
+      url('~@/assets/login/ball.png'),
+      url('~@/assets/login/bottom.png'),
+      url('~@/assets/login/back.png');
+      background-repeat: no-repeat;
+      position: relative;
+      background-size: cover;
+      background-position: center center;
+     /* background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
       background-size: 100%;
       padding: 110px 0 144px;
-      position: relative;
+      position: relative; */
 
       a {
         text-decoration: none;
@@ -108,16 +121,17 @@
           }
         }
         .desc {
+          position: relative;
           font-size: 14px;
-          color: rgba(0, 0, 0, 0.45);
+          color: white;
           margin-top: 12px;
           margin-bottom: 40px;
         }
       }
 
       .main {
-        min-width: 260px;
-        width: 368px;
+        min-width: 160px;
+        width: 18%;
         margin: 0 auto;
       }
 
